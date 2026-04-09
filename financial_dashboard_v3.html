@@ -1,0 +1,195 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.dash{padding:1.5rem;max-width:960px;margin:0 auto;font-family:var(--font-sans);background:var(--color-background-tertiary);border-radius:var(--border-radius-xl)}
+h2.dash-title{font-size:18px;font-weight:500;color:var(--color-text-primary);text-align:center;margin-bottom:1.5rem}
+.sec-label{font-size:11px;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px;font-weight:500;padding-left:2px}
+.card{background:var(--color-background-primary);border:1.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1rem}
+.inner-metric{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:1rem 1.25rem;margin-bottom:1rem;border:0.5px solid var(--color-border-tertiary)}
+.metric-label{font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;text-align:center}
+.metric-value{font-size:28px;font-weight:500;color:var(--color-text-primary);text-align:center}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;margin-bottom:1rem}
+.row{display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+input[type=text],input[type=number],input[type=date]{font-size:14px;padding:6px 10px;background:var(--color-background-primary);border:1px solid var(--color-border-secondary);border-radius:var(--border-radius-md);color:var(--color-text-primary)}
+.btn{font-size:13px;padding:6px 14px;background:transparent;border:1px solid var(--color-border-secondary);border-radius:var(--border-radius-md);cursor:pointer;color:var(--color-text-primary);white-space:nowrap}
+.btn:hover{background:var(--color-background-secondary)}
+.btn-add{border-color:#0F6E56;color:#0F6E56;background:#E1F5EE}
+.btn-add:hover{background:#9FE1CB}
+.btn-sub{border-color:#A32D2D;color:#A32D2D;background:#FCEBEB}
+.btn-sub:hover{background:#F7C1C1}
+.item{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:14px;gap:8px}
+.item:last-child{border-bottom:none}
+.item-name{color:var(--color-text-primary);flex:1;min-width:0}
+.item-meta{font-size:12px;color:var(--color-text-secondary)}
+.item-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--color-text-secondary);font-size:15px;padding:0 2px;line-height:1}
+.del-btn:hover{color:#E24B4A}
+.total-row{display:flex;justify-content:space-between;font-size:13px;color:var(--color-text-secondary);padding-top:8px;margin-top:4px;border-top:1px solid var(--color-border-secondary)}
+.green{color:#0F6E56}
+.red{color:#A32D2D}
+.progress-bg{background:var(--color-background-secondary);border-radius:999px;height:10px;overflow:hidden;margin-top:10px;border:0.5px solid var(--color-border-tertiary)}
+.progress-fill{height:10px;border-radius:999px;background:#1D9E75;transition:width 0.4s}
+.badge{font-size:11px;padding:2px 7px;border-radius:999px;font-weight:500}
+.badge-rec{background:#E6F1FB;color:#0C447C}
+.badge-one{background:#F1EFE8;color:#444441}
+.divider{height:1px;background:var(--color-border-secondary);margin:12px 0}
+.sub-label{font-size:12px;color:var(--color-text-secondary);margin:8px 0 6px;font-weight:500}
+.due-badge{font-size:12px;color:var(--color-text-secondary)}
+.card-header{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--color-border-secondary)}
+</style>
+
+<div class="dash">
+<h2 class="dash-title">Financial Dashboard</h2>
+
+<div class="sec-label">Savings Goal</div>
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px">
+    <span style="font-size:24px;font-weight:500;color:var(--color-text-primary)" id="savings-display">$0</span>
+    <span style="font-size:13px;color:var(--color-text-secondary)">Goal: $10,000</span>
+  </div>
+  <div class="progress-bg"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  <div style="font-size:12px;color:var(--color-text-secondary);margin-top:6px"><span id="progress-pct">0%</span> of goal reached</div>
+  <div class="divider"></div>
+  <div class="row" style="margin-bottom:0">
+    <input type="number" id="savings-amt" placeholder="Amount" min="0" style="width:160px" />
+    <button class="btn btn-add" onclick="adjustSavings(1)">+ Add</button>
+    <button class="btn btn-sub" onclick="adjustSavings(-1)">- Subtract</button>
+  </div>
+</div>
+
+<div class="grid2">
+  <div>
+    <div class="sec-label">Business Account</div>
+    <div class="card">
+      <div class="card-header">Business checking</div>
+      <div class="inner-metric">
+        <div class="metric-label">Balance</div>
+        <div class="metric-value" id="biz-balance">$0</div>
+      </div>
+      <div class="row" style="margin-bottom:0">
+        <input type="number" id="biz-amt" placeholder="Amount" min="0" style="flex:1;min-width:80px" />
+        <button class="btn btn-add" onclick="adjustAccount('biz',1)">+ Add</button>
+        <button class="btn btn-sub" onclick="adjustAccount('biz',-1)">- Subtract</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="sec-label">Personal Account</div>
+    <div class="card">
+      <div class="card-header">Personal checking</div>
+      <div class="inner-metric">
+        <div class="metric-label">Balance</div>
+        <div class="metric-value" id="per-balance">$0</div>
+      </div>
+      <div class="row" style="margin-bottom:0">
+        <input type="number" id="per-amt" placeholder="Amount" min="0" style="flex:1;min-width:80px" />
+        <button class="btn btn-add" onclick="adjustAccount('per',1)">+ Add</button>
+        <button class="btn btn-sub" onclick="adjustAccount('per',-1)">- Subtract</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid2">
+  <div>
+    <div class="sec-label">Recurring Business Expenses</div>
+    <div class="card">
+      <div class="card-header">Monthly expenses</div>
+      <div class="sub-label">Add recurring expense</div>
+      <div class="row">
+        <input type="text" id="biz-exp-name" placeholder="Name" style="flex:1;min-width:80px" />
+        <input type="number" id="biz-exp-amt" placeholder="$" min="0" style="width:72px" />
+      </div>
+      <div class="row">
+        <label style="font-size:13px;color:var(--color-text-secondary);white-space:nowrap">Due day:</label>
+        <input type="number" id="biz-exp-day" placeholder="1-31" min="1" max="31" style="width:68px" />
+        <button class="btn btn-add" onclick="addBizExp()" style="margin-left:auto">+ Add</button>
+      </div>
+      <div id="biz-exp-list"><div style="font-size:13px;color:var(--color-text-secondary);padding:8px 0">No expenses added yet</div></div>
+      <div class="total-row">
+        <span>Monthly total</span>
+        <span id="biz-exp-total" class="red">$0</span>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="sec-label">Personal Expense Tracker</div>
+    <div class="card">
+      <div class="card-header">Personal expenses</div>
+      <div class="sub-label">Add recurring expense</div>
+      <div class="row">
+        <input type="text" id="per-rec-name" placeholder="Name" style="flex:1;min-width:80px" />
+        <input type="number" id="per-rec-amt" placeholder="$" min="0" style="width:72px" />
+        <button class="btn btn-add" onclick="addPerExp('rec')">+ Add</button>
+      </div>
+      <div class="divider"></div>
+      <div class="sub-label">Add one-time expense</div>
+      <div class="row">
+        <input type="text" id="per-one-name" placeholder="Name" style="flex:1;min-width:80px" />
+        <input type="number" id="per-one-amt" placeholder="$" min="0" style="width:72px" />
+        <button class="btn btn-sub" onclick="addPerExp('one')">- Log</button>
+      </div>
+      <div id="per-exp-list"><div style="font-size:13px;color:var(--color-text-secondary);padding:8px 0">No expenses added yet</div></div>
+      <div class="total-row">
+        <span>Total expenses</span>
+        <span id="per-exp-total" class="red">$0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-label">Weekly Profit</div>
+<div class="card">
+  <div class="card-header">Weekly payout log</div>
+  <div class="row">
+    <input type="number" id="profit-amt" placeholder="Weekly profit amount" min="0" style="flex:2;min-width:200px" />
+    <input type="date" id="profit-date" style="width:160px" />
+    <button class="btn btn-add" onclick="addProfit()">+ Add to business</button>
+  </div>
+  <div id="profit-list"><div style="font-size:13px;color:var(--color-text-secondary);padding:4px 0">No entries yet</div></div>
+  <div class="total-row">
+    <span>Total added to business account</span>
+    <span id="profit-total" class="green">$0</span>
+  </div>
+</div>
+</div>
+
+<script>
+let state={savings:0,biz:0,per:0,bizExp:[],perExp:[],profits:[]};
+function fmt(n){const v=Math.round(n);return(v<0?'-$':'$')+Math.abs(v).toLocaleString();}
+function adjustSavings(dir){const v=parseFloat(document.getElementById('savings-amt').value)||0;if(!v)return;state.savings+=dir*v;document.getElementById('savings-amt').value='';render();}
+function adjustAccount(a,dir){const v=parseFloat(document.getElementById(a+'-amt').value)||0;if(!v)return;state[a]+=dir*v;document.getElementById(a+'-amt').value='';render();}
+function addBizExp(){const name=document.getElementById('biz-exp-name').value.trim();const amt=parseFloat(document.getElementById('biz-exp-amt').value)||0;const day=parseInt(document.getElementById('biz-exp-day').value)||null;if(!name||!amt)return;state.bizExp.push({name,amt,day,id:Date.now()});document.getElementById('biz-exp-name').value='';document.getElementById('biz-exp-amt').value='';document.getElementById('biz-exp-day').value='';render();}
+function removeBizExp(id){state.bizExp=state.bizExp.filter(e=>e.id!==id);render();}
+function addPerExp(type){const nEl=type==='rec'?'per-rec-name':'per-one-name';const aEl=type==='rec'?'per-rec-amt':'per-one-amt';const name=document.getElementById(nEl).value.trim();const amt=parseFloat(document.getElementById(aEl).value)||0;if(!name||!amt)return;state.perExp.push({name,amt,type,id:Date.now()});document.getElementById(nEl).value='';document.getElementById(aEl).value='';render();}
+function removePerExp(id){state.perExp=state.perExp.filter(e=>e.id!==id);render();}
+function addProfit(){const amt=parseFloat(document.getElementById('profit-amt').value)||0;const date=document.getElementById('profit-date').value;if(!amt)return;state.profits.push({amt,date,id:Date.now()});state.biz+=amt;document.getElementById('profit-amt').value='';render();}
+function removeProfit(id){const p=state.profits.find(x=>x.id===id);if(p){state.biz-=p.amt;state.profits=state.profits.filter(x=>x.id!==id);}render();}
+function ordinal(d){if(!d)return'';const s=['th','st','nd','rd'];const v=d%100;return d+(s[(v-20)%10]||s[v]||s[0]);}
+function render(){
+  const bizExpTotal=state.bizExp.reduce((s,e)=>s+e.amt,0);
+  const perExpTotal=state.perExp.reduce((s,e)=>s+e.amt,0);
+  const profitTotal=state.profits.reduce((s,p)=>s+p.amt,0);
+  document.getElementById('savings-display').textContent=fmt(state.savings);
+  const pct=Math.min(100,Math.round((Math.max(0,state.savings)/10000)*100));
+  document.getElementById('progress-fill').style.width=pct+'%';
+  document.getElementById('progress-pct').textContent=pct+'%';
+  const bizNet=state.biz-bizExpTotal;
+  document.getElementById('biz-balance').textContent=fmt(bizNet);
+  document.getElementById('biz-balance').style.color=bizNet<0?'#A32D2D':'var(--color-text-primary)';
+  const perNet=state.per-perExpTotal;
+  document.getElementById('per-balance').textContent=fmt(perNet);
+  document.getElementById('per-balance').style.color=perNet<0?'#A32D2D':'var(--color-text-primary)';
+  document.getElementById('biz-exp-total').textContent=fmt(bizExpTotal);
+  document.getElementById('per-exp-total').textContent=fmt(perExpTotal);
+  document.getElementById('profit-total').textContent=fmt(profitTotal);
+  const bizEl=document.getElementById('biz-exp-list');
+  bizEl.innerHTML=state.bizExp.length?state.bizExp.map(e=>`<div class="item"><div class="item-name">${e.name}${e.day?'<div class="due-badge">Due: '+ordinal(e.day)+' of month</div>':''}</div><div class="item-right"><span class="red" style="font-size:14px;font-weight:500">${fmt(e.amt)}</span><button class="del-btn" onclick="removeBizExp(${e.id})">x</button></div></div>`).join(''):'<div style="font-size:13px;color:var(--color-text-secondary);padding:8px 0">No expenses added yet</div>';
+  const perEl=document.getElementById('per-exp-list');
+  perEl.innerHTML=state.perExp.length?state.perExp.map(e=>`<div class="item"><div class="item-name">${e.name}<span class="badge ${e.type==='rec'?'badge-rec':'badge-one'}" style="margin-left:6px">${e.type==='rec'?'recurring':'one-time'}</span></div><div class="item-right"><span class="red" style="font-size:14px;font-weight:500">${fmt(e.amt)}</span><button class="del-btn" onclick="removePerExp(${e.id})">x</button></div></div>`).join(''):'<div style="font-size:13px;color:var(--color-text-secondary);padding:8px 0">No expenses added yet</div>';
+  const profitEl=document.getElementById('profit-list');
+  profitEl.innerHTML=state.profits.length?state.profits.map(p=>`<div class="item"><div class="item-name"><span class="green" style="font-weight:500">${fmt(p.amt)}</span>${p.date?'<span class="item-meta" style="margin-left:8px">'+p.date+'</span>':''}</div><button class="del-btn" onclick="removeProfit(${p.id})">x</button></div>`).join(''):'<div style="font-size:13px;color:var(--color-text-secondary);padding:4px 0">No entries yet</div>';
+}
+document.getElementById('profit-date').value=new Date().toISOString().split('T')[0];
+render();
+</script>
